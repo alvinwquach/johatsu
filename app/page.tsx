@@ -1,103 +1,211 @@
-import Image from "next/image";
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [showJohatsu, setShowJohatsu] = useState(true);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const letterVariants = {
+    hidden: { opacity: 0, y: 0 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+      },
+    }),
+    exit: (i: number) => ({
+      opacity: 0,
+      y: -80 + Math.random() * 40,
+      x: Math.random() * 150 - 75,
+      rotate: Math.random() * 360 - 180,
+      scale: 0.3,
+      filter: "blur(2px)",
+      transition: {
+        duration: 1.2 + Math.random() * 0.3,
+        ease: "easeOut" as const,
+        delay: i * 0.08,
+      },
+    }),
+  };
+
+  const particleVariants = {
+    hidden: { opacity: 0, scale: 0 },
+    visible: (i: number) => ({
+      opacity: [0.3, 0.5, 0],
+      y: -100 + Math.random() * 50,
+      x: Math.random() * 200 - 100,
+      scale: 0.5 + Math.random() * 0.5,
+      filter: "blur(3px)",
+      transition: {
+        duration: 1.5,
+        delay: i * 0.1 + 0.5,
+        ease: "easeOut" as const,
+      },
+    }),
+  };
+
+  const revealVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 1, delay: 1.8, ease: "easeInOut" as const },
+    },
+  };
+
+  const tickVariants = {
+    tick: {
+      scale: [1, 1.1, 1],
+      transition: { duration: 0.2, repeat: Infinity, repeatDelay: 0.8 },
+    },
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowJohatsu(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const targetDate = new Date("2025-11-01T00:00:00").getTime();
+
+    const updateTimer = () => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTimeLeft({ days, hours, minutes, seconds });
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white font-sans p-8">
+      <main className="flex flex-col items-center gap-12">
+        <div className="relative text-5xl sm:text-7xl font-extrabold tracking-tighter drop-shadow-lg">
+          <AnimatePresence>
+            {showJohatsu && (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="flex justify-center"
+              >
+                {"Johatsu".split("").map((letter, index) => (
+                  <div key={index} className="relative inline-block">
+                    <motion.span
+                      custom={index}
+                      variants={letterVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="inline-block"
+                    >
+                      {letter}
+                    </motion.span>
+                    {Array.from({ length: 3 }).map((_, particleIndex) => (
+                      <motion.span
+                        key={`particle-${index}-${particleIndex}`}
+                        custom={index}
+                        variants={particleVariants}
+                        initial="hidden"
+                        animate={showJohatsu ? "hidden" : "visible"}
+                        className="absolute top-0 text-xs text-gray-400"
+                      >
+                        •
+                      </motion.span>
+                    ))}
+                  </div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {!showJohatsu && (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={revealVariants}
+                className="absolute inset-0 flex justify-center"
+              >
+                The Evaporated
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <div className="flex flex-col items-center gap-6 mt-10">
+          <div className="flex gap-3 text-4xl sm:text-5xl font-mono bg-black/[.7] px-8 py-6 rounded-xl shadow-2xl border border-red-800/30">
+            <div className="flex flex-col items-center">
+              <motion.span
+                variants={tickVariants}
+                animate="tick"
+                className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+              >
+                {String(timeLeft.days).padStart(2, "0")}
+              </motion.span>
+              <span className="text-sm text-gray-400">Days</span>
+            </div>
+            <span className="text-red-500">:</span>
+            <div className="flex flex-col items-center">
+              <motion.span
+                variants={tickVariants}
+                animate="tick"
+                className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+              >
+                {String(timeLeft.hours).padStart(2, "0")}
+              </motion.span>
+              <span className="text-sm text-gray-400">Hours</span>
+            </div>
+            <span className="text-red-500">:</span>
+            <div className="flex flex-col items-center">
+              <motion.span
+                variants={tickVariants}
+                animate="tick"
+                className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+              >
+                {String(timeLeft.minutes).padStart(2, "0")}
+              </motion.span>
+              <span className="text-sm text-gray-400">Minutes</span>
+            </div>
+            <span className="text-red-500">:</span>
+            <div className="flex flex-col items-center">
+              <motion.span
+                variants={tickVariants}
+                animate="tick"
+                className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+              >
+                {String(timeLeft.seconds).padStart(2, "0")}
+              </motion.span>
+              <span className="text-sm text-gray-400">Seconds</span>
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }

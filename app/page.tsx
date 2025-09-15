@@ -2,7 +2,9 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Suspense, useEffect, useState } from "react";
+import Image from "next/image";
 import VideoComponent from "./ui/VideoComponent";
+import LocalVideoComponent from "./ui/LocalVideoComponent";
 
 export default function Home() {
   const [showJohatsu, setShowJohatsu] = useState(true);
@@ -18,10 +20,7 @@ export default function Home() {
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.5,
-      },
+      transition: { delay: i * 0.1, duration: 0.5 },
     }),
     exit: (i: number) => ({
       opacity: 0,
@@ -107,7 +106,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white font-sans p-8">
-      <main className="flex flex-col items-center gap-12">
+      <main className="flex flex-col items-center gap-16 mt-20">
         <div className="relative text-5xl sm:text-7xl font-extrabold tracking-tighter drop-shadow-lg flex flex-col items-center gap-4">
           <AnimatePresence>
             {showJohatsu && (
@@ -159,57 +158,47 @@ export default function Home() {
             )}
           </AnimatePresence>
         </div>
-        <div className="flex flex-col items-center gap-6 mt-6">
+        <div className="flex flex-col items-center gap-6 mt-12">
           <div className="flex gap-3 text-4xl sm:text-5xl font-mono bg-black/[.7] px-8 py-6 rounded-xl shadow-2xl border border-red-800/30">
-            <div className="flex flex-col items-center">
-              <motion.span
-                variants={tickVariants}
-                animate="tick"
-                className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
-              >
-                {String(timeLeft.days).padStart(2, "0")}
-              </motion.span>
-              <span className="text-sm text-gray-400">Days</span>
-            </div>
-            <span className="text-red-500">:</span>
-            <div className="flex flex-col items-center">
-              <motion.span
-                variants={tickVariants}
-                animate="tick"
-                className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
-              >
-                {String(timeLeft.hours).padStart(2, "0")}
-              </motion.span>
-              <span className="text-sm text-gray-400">Hours</span>
-            </div>
-            <span className="text-red-500">:</span>
-            <div className="flex flex-col items-center">
-              <motion.span
-                variants={tickVariants}
-                animate="tick"
-                className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
-              >
-                {String(timeLeft.minutes).padStart(2, "0")}
-              </motion.span>
-              <span className="text-sm text-gray-400">Minutes</span>
-            </div>
-            <span className="text-red-500">:</span>
-            <div className="flex flex-col items-center">
-              <motion.span
-                variants={tickVariants}
-                animate="tick"
-                className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
-              >
-                {String(timeLeft.seconds).padStart(2, "0")}
-              </motion.span>
-              <span className="text-sm text-gray-400">Seconds</span>
-            </div>
+            {["Days", "Hours", "Minutes", "Seconds"].map((label, i) => {
+              const value = Object.values(timeLeft)[i];
+              return (
+                <div key={label} className="flex items-center gap-2">
+                  {i > 0 && <span className="text-red-500 select-none">:</span>}
+                  <div className="flex flex-col items-center">
+                    <motion.span
+                      variants={tickVariants}
+                      animate="tick"
+                      className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                    >
+                      {String(value).padStart(2, "0")}
+                    </motion.span>
+                    <span className="text-sm text-gray-400">{label}</span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="w-full max-w-3xl mt-12 aspect-video">
           <Suspense fallback={<p>Loading video...</p>}>
             <VideoComponent />
           </Suspense>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 mt-16 items-center justify-center">
+          <div className="w-64 h-64 relative">
+            <Image
+              src="https://i.pinimg.com/originals/a9/88/7d/a9887d55251c5f8579d8819571d9e110.gif"
+              alt="Dean Winchester from Supernatural (Michael's vessel) shows off his archangel wings"
+              fill
+              className="object-contain rounded-lg shadow-lg"
+              unoptimized
+              priority
+            />
+          </div>
+          <div className="w-64 mb-12">
+            <LocalVideoComponent />
+          </div>
         </div>
       </main>
     </div>

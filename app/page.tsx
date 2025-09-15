@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import VideoComponent from "./ui/VideoComponent";
 
 export default function Home() {
   const [showJohatsu, setShowJohatsu] = useState(true);
@@ -107,7 +108,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white font-sans p-8">
       <main className="flex flex-col items-center gap-12">
-        <div className="relative text-5xl sm:text-7xl font-extrabold tracking-tighter drop-shadow-lg">
+        <div className="relative text-5xl sm:text-7xl font-extrabold tracking-tighter drop-shadow-lg flex flex-col items-center gap-4">
           <AnimatePresence>
             {showJohatsu && (
               <motion.div
@@ -158,7 +159,7 @@ export default function Home() {
             )}
           </AnimatePresence>
         </div>
-        <div className="flex flex-col items-center gap-6 mt-10">
+        <div className="flex flex-col items-center gap-6 mt-6">
           <div className="flex gap-3 text-4xl sm:text-5xl font-mono bg-black/[.7] px-8 py-6 rounded-xl shadow-2xl border border-red-800/30">
             <div className="flex flex-col items-center">
               <motion.span
@@ -204,6 +205,11 @@ export default function Home() {
               <span className="text-sm text-gray-400">Seconds</span>
             </div>
           </div>
+        </div>
+        <div className="w-full max-w-3xl mt-12 aspect-video">
+          <Suspense fallback={<p>Loading video...</p>}>
+            <VideoComponent />
+          </Suspense>
         </div>
       </main>
     </div>

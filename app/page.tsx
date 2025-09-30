@@ -3,8 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-import VideoPlaylist from "./ui/VideoComponent";
-import LocalVideoComponent from "./ui/LocalVideoComponent";
+import VideoPlaylist from "./ui/VideoPlaylist";
+import LocalVideo from "./ui/LocalVideo";
 
 export default function Home() {
   const [showJohatsu, setShowJohatsu] = useState(true);
@@ -197,7 +197,7 @@ export default function Home() {
             />
           </div>
           <div className="w-64 mb-12">
-            <LocalVideoComponent />
+            <LocalVideo />
           </div>
         </div>
       </main>

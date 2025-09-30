@@ -1,6 +1,6 @@
 "use client";
 
-function VideoComponent() {
+function VideoPlaylist() {
   return (
     <div
       style={{
@@ -11,7 +11,7 @@ function VideoComponent() {
       }}
     >
       <iframe
-        src="https://www.youtube.com/embed/PlzI12r7Q1g?autoplay=1&mute=1&loop=1&playlist=PlzI12r7Q1g,UA49_ZZ00E0,FaMlZ9GtC6Y"
+        src="https://www.youtube.com/embed/PlzI12r7Q1g?autoplay=1&mute=1&loop=1&playlist=PlzI12r7Q1g,UA49_ZZ00E0,FaMlZ9GtC6Y,z8NqRC_NQpo"
         title="YouTube video player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
@@ -28,4 +28,4 @@ function VideoComponent() {
   );
 }
 
-export default VideoComponent;
+export default VideoPlaylist;

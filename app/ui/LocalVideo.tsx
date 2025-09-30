@@ -1,6 +1,6 @@
 "use client";
 
-export default function LocalVideoComponent() {
+function LocalVideo() {
   return (
     <div className="w-full max-w-3xl mt-12 aspect-video">
       <video
@@ -20,3 +20,5 @@ export default function LocalVideoComponent() {
     </div>
   );
 }
+
+export default LocalVideo;

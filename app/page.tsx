@@ -3,8 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-import VideoComponent from "./ui/VideoComponent";
-import LocalVideoComponent from "./ui/LocalVideoComponent";
+import VideoPlaylist from "./ui/VideoPlaylist";
+import LocalVideo from "./ui/LocalVideo";
 
 export default function Home() {
   const [showJohatsu, setShowJohatsu] = useState(true);
@@ -182,7 +182,7 @@ export default function Home() {
         </div>
         <div className="w-full max-w-3xl mt-12 aspect-video">
           <Suspense fallback={<p>Loading video...</p>}>
-            <VideoComponent />
+            <VideoPlaylist />
           </Suspense>
         </div>
         <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 mt-16 items-center justify-center">
@@ -197,7 +197,7 @@ export default function Home() {
             />
           </div>
           <div className="w-64 mb-12">
-            <LocalVideoComponent />
+            <LocalVideo />
           </div>
         </div>
       </main>

@@ -11,7 +11,7 @@ function NewVideoPlaylist() {
       }}
     >
       <iframe
-        src="https://www.youtube.com/embed/By7ctqcWxyM?autoplay=1&mute=1&loop=1&playlist=xuXm-AwMO4c,SXKB-HpKWUI"
+        src="https://www.youtube.com/embed/By7ctqcWxyM?autoplay=1&mute=1&loop=1&playlist=xuXm-AwMO4c,SXKB-HpKWUI,video_id_3"
         title="YouTube video player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
